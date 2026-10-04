@@ -6,3 +6,7 @@ __pycache__/
 data/sample/*.mp4
 data/sample/*.csv
 data/*.db
+data/potholes/images/
+data/potholes/labels/
+runs/
+models/*.onnx

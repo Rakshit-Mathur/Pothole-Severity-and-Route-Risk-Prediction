@@ -22,7 +22,7 @@ def main() -> None:
     logging.basicConfig(level=logging.INFO)
     path = args.source or cfg["camera"]["source"]
     if path in ("0", "picam"):
-        raise ValueError("live camera support is added in M8; use a video file for replay")
+        raise ValueError("this software demonstration accepts a video file")
     source = VideoSource(path)
     imu = PoseLoop(MockImu(), cfg["imu"]["rate_hz"])
     gps = MockGps(cfg["gps"]["fallback_kmh"]) if args.mock_gps else CsvGps("data/sample/gps.csv")

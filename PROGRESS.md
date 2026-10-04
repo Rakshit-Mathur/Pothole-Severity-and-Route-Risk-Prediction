@@ -7,7 +7,6 @@
 - [x] M5 detector and tracker a861369
 - [x] M6 decision, warning, runner and scheduler f3ef6b6
 - [x] M7 CLI and end-to-end test bc68bf3
-- [x] M8 hardware classes 121f920
 - [x] M9 benchmark and helper scripts 53aee62
 
 ## Current
@@ -15,6 +14,7 @@
 
 ## Blocked / skipped
 - M10-M12: secondary storage, dashboard and routing cut to keep the core project small.
+- M8: removed; this is software demonstration scope only.
 
 ## Notes (max 10 lines)
 - [x] M0 scaffold
@@ -25,7 +25,7 @@
 - [x] M5 detector and tracker
 - [x] M6 decision, warning, runner and scheduler
 - [x] M7 CLI and end-to-end test
-- [x] M8 real hardware classes
+- [ ] M8 real hardware classes (removed)
 - [x] M9 benchmark, train/export and calibration scripts
 - [ ] M10 storage (skipped)
 - [ ] M11 dashboard (skipped)
