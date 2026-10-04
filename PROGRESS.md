@@ -11,7 +11,7 @@
 - [x] M9 benchmark and helper scripts 53aee62
 
 ## Current
-- WRAP-UP: validate core pipeline and documentation.
+- Complete: core replay pipeline validated.
 
 ## Blocked / skipped
 - M10-M12: secondary storage, dashboard and routing cut to keep the core project small.
