@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "phelmet"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = ["numpy>=1.24", "opencv-python>=4.8", "PyYAML>=6.0"]
+
+[project.optional-dependencies]
+onnx = ["onnxruntime>=1.16"]
+gps = ["pyserial>=3.5"]
+test = ["pytest>=7.4"]
+
+[project.scripts]
+phelmet = "phelmet.app:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.setuptools.packages.find]
+include = ["phelmet*"]

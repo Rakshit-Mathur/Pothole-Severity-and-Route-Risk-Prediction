@@ -1,0 +1,8 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+*.egg-info/
+data/sample/*.mp4
+data/sample/*.csv
+data/*.db

@@ -1,0 +1,47 @@
+camera:
+  width: 320
+  height: 240
+  fps: 20
+  source: data/sample/road.mp4
+  exposure_us: 5000
+  height_m: 1.55
+  focal_px: 300.0
+  pitch_deg: 8.0
+imu:
+  source: mock
+  rate_hz: 100
+  pitch_min: -5.0
+  pitch_max: 25.0
+  max_rate_dps: 55.0
+gps:
+  source: mock
+  fallback_kmh: 40.0
+roi:
+  fixed_top: 90
+  blur_min: 40.0
+  sat_min: 8.0
+  texture_min: 12.0
+  edge_min: 0.02
+detector:
+  kind: mock
+  model: models/pothole.onnx
+  input_size: 320
+  confidence: 0.40
+tracker:
+  iou_min: 0.25
+  confirm_n: 2
+  confirm_m: 3
+  cooldown_s: 3.0
+decision:
+  tti_min_s: 0.8
+  tti_max_s: 2.5
+  rough_patch_s: 1.5
+  latency_p95_ms: 180.0
+warning:
+  enabled: true
+  led: false
+  beep_ms: 120
+pipeline:
+  stabilize: false
+  queue_size: 1
+  telemetry_queue_size: 200
