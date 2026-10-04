@@ -7,9 +7,10 @@
 - [x] M5 detector and tracker a861369
 - [x] M6 decision, warning, runner and scheduler f3ef6b6
 - [x] M7 CLI and end-to-end test bc68bf3
+- [x] M8 hardware classes 121f920
 
 ## Current
-- M8 hardware classes: optional Raspberry Pi adapters.
+- M9 benchmark and ML helper scripts.
 
 ## Blocked / skipped
 
@@ -22,7 +23,7 @@
 - [x] M5 detector and tracker
 - [x] M6 decision, warning, runner and scheduler
 - [x] M7 CLI and end-to-end test
-- [ ] M8 real hardware classes
+- [x] M8 real hardware classes
 - [ ] M9 benchmark, train/export and calibration scripts
 - [ ] M10 storage
 - [ ] M11 dashboard
