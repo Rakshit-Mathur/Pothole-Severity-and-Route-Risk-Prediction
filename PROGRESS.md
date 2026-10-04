@@ -4,9 +4,10 @@
 - [x] M2 types and timing 408d43d
 - [x] M3 mock I/O bfe5566
 - [x] M4 capture, pose and ROI b42c8f9
+- [x] M5 detector and tracker a861369
 
 ## Current
-- M5 detector and tracker: mock/ONNX detection and temporal confirmation.
+- M6 decision, warning, runner and scheduler: issue alerts on the critical path.
 
 ## Blocked / skipped
 
@@ -16,7 +17,7 @@
 - [x] M2 types and timing
 - [x] M3 mock I/O and synthetic data
 - [x] M4 capture, pose and ROI
-- [ ] M5 detector and tracker
+- [x] M5 detector and tracker
 - [ ] M6 decision, warning, runner and scheduler
 - [ ] M7 CLI and end-to-end test
 - [ ] M8 real hardware classes
