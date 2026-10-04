@@ -1,12 +1,13 @@
 ## Done
+- [x] M0 scaffold cb4c14e
 
 ## Current
-- M0 scaffold: create runnable package and configuration.
+- M1 geometry: ground-plane distance, width and TTI.
 
 ## Blocked / skipped
 
 ## Notes (max 10 lines)
-- [ ] M0 scaffold
+- [x] M0 scaffold
 - [ ] M1 geometry
 - [ ] M2 types and timing
 - [ ] M3 mock I/O and synthetic data
