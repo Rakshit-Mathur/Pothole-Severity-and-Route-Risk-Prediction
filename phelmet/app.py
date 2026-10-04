@@ -4,6 +4,7 @@ import time
 
 from .config import load_cfg
 from .io import ConsoleActuator, CsvGps, MockGps, MockImu, VideoSource
+from .io.viewer import Viewer
 from .pose import PoseLoop
 from .runner import run_loop
 
@@ -17,6 +18,7 @@ def main() -> None:
     ap.add_argument("--no-dashboard", action="store_true")
     ap.add_argument("--headless", action="store_true")
     ap.add_argument("--debug-view", action="store_true")
+    ap.add_argument("--save-video")
     args = ap.parse_args()
     cfg = load_cfg(args.config)
     logging.basicConfig(level=logging.INFO)
@@ -27,8 +29,11 @@ def main() -> None:
     imu = PoseLoop(MockImu(), cfg["imu"]["rate_hz"])
     gps = MockGps(cfg["gps"]["fallback_kmh"]) if args.mock_gps else CsvGps("data/sample/gps.csv")
     started = time.monotonic()
+    viewer = Viewer(1 / source.delay, args.debug_view, args.save_video) if args.debug_view or args.save_video else None
+    if viewer:
+        viewer.start()
     try:
-        result = run_loop(source, imu, ConsoleActuator(), cfg, gps)
+        result = run_loop(source, imu, ConsoleActuator(), cfg, gps, viewer=viewer)
     except KeyboardInterrupt:
         print("stopping")
         result = {"frames": 0, "p50_ms": 0, "p95_ms": 0, "alerts": []}

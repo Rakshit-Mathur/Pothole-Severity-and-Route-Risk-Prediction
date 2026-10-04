@@ -10,3 +10,4 @@ data/potholes/images/
 data/potholes/labels/
 runs/
 models/*.onnx
+demo_out.mp4

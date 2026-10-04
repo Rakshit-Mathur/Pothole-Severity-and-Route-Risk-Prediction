@@ -34,6 +34,8 @@ pytest -q
 python scripts/benchmark.py
 ```
 
+To make an annotated demo video with boxes, ROI, HUD, and warning moments, run `python scripts/demo.py`. It writes `demo_out.mp4`; use `--debug-view` with the app to see the same overlay live and press `q` to quit. Screenshot to be added.
+
 `config.yaml` selects the mock detector and contains all normal tunables. See [the training workflow](docs/TRAINING.md) to replace it with your own ONNX pothole model.
 
 ## Results
