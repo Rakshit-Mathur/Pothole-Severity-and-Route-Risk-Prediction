@@ -17,9 +17,9 @@ def main() -> None:
         for start in (50, 155, 250):
             age = i - start
             if 0 < age < 70:
-                y = 120 + age
-                r = 4 + age // 5
-                cv2.ellipse(img, (160, min(y, 228)), (r, max(2, r // 3)), 0, 0, 360, (18, 18, 18), -1)
+                y = 102 + age * 0.7
+                r = 4 + age // 10
+                cv2.ellipse(img, (160, int(min(y, 228))), (r, max(2, r // 3)), 0, 0, 360, (18, 18, 18), -1)
         video.write(img)
     video.release()
     with (out / "imu.csv").open("w", newline="") as f:

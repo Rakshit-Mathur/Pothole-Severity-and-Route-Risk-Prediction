@@ -20,8 +20,8 @@ roi:
   fixed_top: 90
   blur_min: 40.0
   sat_min: 8.0
-  texture_min: 12.0
-  edge_min: 0.02
+  texture_min: 2.0
+  edge_min: 0.001
 detector:
   kind: mock
   model: models/pothole.onnx

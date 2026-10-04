@@ -12,6 +12,12 @@ def iou(a, b) -> float:
     return inter / (aw*ah + bw*bh - inter + 1e-6)
 
 
+def near(a, b) -> bool:
+    ax, ay, aw, ah = a
+    bx, by, bw, bh = b
+    return ((ax+aw/2-bx-bw/2) ** 2 + (ay+ah/2-by-bh/2) ** 2) ** .5 < 35
+
+
 @dataclass
 class Track:
     id: int
@@ -30,7 +36,7 @@ class Tracker:
         used = set()
         for trk in self.tracks:
             best = max(range(len(dets)), key=lambda i: iou(trk.det.box, dets[i].box), default=-1)
-            hit = best >= 0 and best not in used and iou(trk.det.box, dets[best].box) >= self.cfg["iou_min"]
+            hit = best >= 0 and best not in used and (iou(trk.det.box, dets[best].box) >= self.cfg["iou_min"] or near(trk.det.box, dets[best].box))
             trk.seen.append(hit)
             trk.seen = trk.seen[-self.cfg["confirm_m"]:]
             if hit:

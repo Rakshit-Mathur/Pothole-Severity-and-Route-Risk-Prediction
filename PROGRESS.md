@@ -8,11 +8,13 @@
 - [x] M6 decision, warning, runner and scheduler f3ef6b6
 - [x] M7 CLI and end-to-end test bc68bf3
 - [x] M8 hardware classes 121f920
+- [x] M9 benchmark and helper scripts 53aee62
 
 ## Current
-- M9 benchmark and ML helper scripts.
+- WRAP-UP: validate core pipeline and documentation.
 
 ## Blocked / skipped
+- M10-M12: secondary storage, dashboard and routing cut to keep the core project small.
 
 ## Notes (max 10 lines)
 - [x] M0 scaffold
@@ -24,7 +26,7 @@
 - [x] M6 decision, warning, runner and scheduler
 - [x] M7 CLI and end-to-end test
 - [x] M8 real hardware classes
-- [ ] M9 benchmark, train/export and calibration scripts
-- [ ] M10 storage
-- [ ] M11 dashboard
-- [ ] M12 safest routing
+- [x] M9 benchmark, train/export and calibration scripts
+- [ ] M10 storage (skipped)
+- [ ] M11 dashboard (skipped)
+- [ ] M12 safest routing (skipped)
