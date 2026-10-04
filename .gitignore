@@ -11,4 +11,5 @@ data/potholes/labels/
 data/pothole_video/
 runs/
 models/*.onnx
+yolov8*.pt
 demo_out.mp4

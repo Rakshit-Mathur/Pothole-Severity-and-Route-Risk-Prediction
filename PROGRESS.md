@@ -11,11 +11,12 @@
 - [x] M7b detection overlay and demo video
 
 ## Current
-- M9b: training YOLOv8n on supplied RGB/mask clips (CPU fallback).
+- M9b: CUDA PyTorch install required before GPU training can resume.
 
 ## Blocked / skipped
 - M10-M12: secondary storage, dashboard and routing cut to keep the core project small.
 - M8: removed; this is software demonstration scope only.
+- M9b: CUDA wheel installer stalled; GPU and prepared data are ready.
 
 ## Notes (max 10 lines)
 - [x] M0 scaffold
