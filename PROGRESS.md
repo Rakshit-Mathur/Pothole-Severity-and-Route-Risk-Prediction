@@ -3,9 +3,10 @@
 - [x] M1 geometry 7ea92d2
 - [x] M2 types and timing 408d43d
 - [x] M3 mock I/O bfe5566
+- [x] M4 capture, pose and ROI b42c8f9
 
 ## Current
-- M4 capture, pose and ROI: latest-frame queue and head-pose gating.
+- M5 detector and tracker: mock/ONNX detection and temporal confirmation.
 
 ## Blocked / skipped
 
@@ -14,7 +15,7 @@
 - [x] M1 geometry
 - [x] M2 types and timing
 - [x] M3 mock I/O and synthetic data
-- [ ] M4 capture, pose and ROI
+- [x] M4 capture, pose and ROI
 - [ ] M5 detector and tracker
 - [ ] M6 decision, warning, runner and scheduler
 - [ ] M7 CLI and end-to-end test
