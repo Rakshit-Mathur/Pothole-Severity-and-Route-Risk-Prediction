@@ -1,17 +1,17 @@
 ## Done
 - [x] M0 scaffold cb4c14e
 - [x] M1 geometry 7ea92d2
+- [x] M2 types and timing 408d43d
 
 ## Current
-- M2 types and timing: frame data and rolling latency percentiles.
+- M3 mock I/O: replay video, IMU and GPS plus synthetic sample data.
 
 ## Blocked / skipped
 
 ## Notes (max 10 lines)
 - [x] M0 scaffold
 - [x] M1 geometry
-- [ ] M2 types and timing
-- [ ] M2 types and timing
+- [x] M2 types and timing
 - [ ] M3 mock I/O and synthetic data
 - [ ] M4 capture, pose and ROI
 - [ ] M5 detector and tracker
