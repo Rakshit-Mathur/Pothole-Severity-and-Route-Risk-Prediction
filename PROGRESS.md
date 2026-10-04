@@ -1,14 +1,16 @@
 ## Done
 - [x] M0 scaffold cb4c14e
+- [x] M1 geometry 7ea92d2
 
 ## Current
-- M1 geometry: ground-plane distance, width and TTI.
+- M2 types and timing: frame data and rolling latency percentiles.
 
 ## Blocked / skipped
 
 ## Notes (max 10 lines)
 - [x] M0 scaffold
-- [ ] M1 geometry
+- [x] M1 geometry
+- [ ] M2 types and timing
 - [ ] M2 types and timing
 - [ ] M3 mock I/O and synthetic data
 - [ ] M4 capture, pose and ROI
