@@ -2,9 +2,10 @@
 - [x] M0 scaffold cb4c14e
 - [x] M1 geometry 7ea92d2
 - [x] M2 types and timing 408d43d
+- [x] M3 mock I/O bfe5566
 
 ## Current
-- M3 mock I/O: replay video, IMU and GPS plus synthetic sample data.
+- M4 capture, pose and ROI: latest-frame queue and head-pose gating.
 
 ## Blocked / skipped
 
@@ -12,7 +13,7 @@
 - [x] M0 scaffold
 - [x] M1 geometry
 - [x] M2 types and timing
-- [ ] M3 mock I/O and synthetic data
+- [x] M3 mock I/O and synthetic data
 - [ ] M4 capture, pose and ROI
 - [ ] M5 detector and tracker
 - [ ] M6 decision, warning, runner and scheduler
