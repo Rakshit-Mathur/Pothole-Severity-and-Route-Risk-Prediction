@@ -5,9 +5,10 @@
 - [x] M3 mock I/O bfe5566
 - [x] M4 capture, pose and ROI b42c8f9
 - [x] M5 detector and tracker a861369
+- [x] M6 decision, warning, runner and scheduler f3ef6b6
 
 ## Current
-- M6 decision, warning, runner and scheduler: issue alerts on the critical path.
+- M7 CLI and end-to-end test: laptop replay command and clean shutdown.
 
 ## Blocked / skipped
 
@@ -18,7 +19,7 @@
 - [x] M3 mock I/O and synthetic data
 - [x] M4 capture, pose and ROI
 - [x] M5 detector and tracker
-- [ ] M6 decision, warning, runner and scheduler
+- [x] M6 decision, warning, runner and scheduler
 - [ ] M7 CLI and end-to-end test
 - [ ] M8 real hardware classes
 - [ ] M9 benchmark, train/export and calibration scripts

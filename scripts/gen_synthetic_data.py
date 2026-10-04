@@ -11,7 +11,7 @@ def main() -> None:
     w, h, fps, frames = 320, 240, 20, 300
     video = cv2.VideoWriter(str(out / "road.mp4"), cv2.VideoWriter_fourcc(*"mp4v"), fps, (w, h))
     for i in range(frames):
-        img = np.full((h, w, 3), (85, 88, 83), np.uint8)
+        img = np.full((h, w, 3), (78, 88, 82), np.uint8)
         for y in range(75, h, 12):
             cv2.line(img, (0, y + i % 12), (w, y + i % 12), (76, 79, 75), 1)
         for start in (50, 155, 250):
