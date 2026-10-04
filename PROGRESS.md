@@ -6,9 +6,10 @@
 - [x] M4 capture, pose and ROI b42c8f9
 - [x] M5 detector and tracker a861369
 - [x] M6 decision, warning, runner and scheduler f3ef6b6
+- [x] M7 CLI and end-to-end test bc68bf3
 
 ## Current
-- M7 CLI and end-to-end test: laptop replay command and clean shutdown.
+- M8 hardware classes: optional Raspberry Pi adapters.
 
 ## Blocked / skipped
 
@@ -20,7 +21,7 @@
 - [x] M4 capture, pose and ROI
 - [x] M5 detector and tracker
 - [x] M6 decision, warning, runner and scheduler
-- [ ] M7 CLI and end-to-end test
+- [x] M7 CLI and end-to-end test
 - [ ] M8 real hardware classes
 - [ ] M9 benchmark, train/export and calibration scripts
 - [ ] M10 storage
