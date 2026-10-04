@@ -11,7 +11,7 @@
 - [x] M7b detection overlay and demo video
 
 ## Current
-- Complete: software replay pipeline and overlay validated.
+- M9b: training YOLOv8n on supplied RGB/mask clips (CPU fallback).
 
 ## Blocked / skipped
 - M10-M12: secondary storage, dashboard and routing cut to keep the core project small.
@@ -29,6 +29,7 @@
 - [x] M7b detection overlay and demo video
 - [ ] M8 real hardware classes (removed)
 - [x] M9 benchmark, train/export and calibration scripts
+- [ ] M9b train on pothole_video dataset
 - [ ] M10 storage (skipped)
 - [ ] M11 dashboard (skipped)
 - [ ] M12 safest routing (skipped)

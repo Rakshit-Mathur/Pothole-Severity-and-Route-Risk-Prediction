@@ -78,3 +78,25 @@ Change `detector.kind` from `mock` to `onnx` in `config.yaml`, then run replay a
 ## 8. Iterate safely
 
 Version the dataset manifest, label rules, train command, checkpoint, validation metrics, and replay videos. Do not mix the synthetic generator into the training dataset. Improve data diversity and annotation consistency before changing thresholds or model size.
+
+## Supplied `pothole_video` dataset
+
+This repository includes paired RGB and binary-mask clips under `data/pothole_video/pothole_video`. Build the YOLO bounding-box dataset from those masks, train it, export the best model, then make an annotated replay of `data/sample/demo.mp4`:
+
+```powershell
+py -3.11 -m pip install --upgrade --force-reinstall torch torchvision --index-url https://download.pytorch.org/whl/cu126
+py -3.11 -m pip install ultralytics onnx onnxruntime-gpu
+py -3.11 -c "import torch; print(torch.__version__, torch.version.cuda, torch.cuda.get_device_name(0))"
+python scripts/make_pothole_dataset.py
+py -3.11 scripts/train.py data/potholes.yaml --epochs 30 --size 320 --batch 8 --device 0
+py -3.11 scripts/export.py runs/detect/pothole/weights/best.pt --size 320
+Copy-Item runs\detect\pothole\weights\best.onnx models\pothole.onnx
+```
+
+The model path is printed when training finishes. Set `detector.kind: onnx` in `config.yaml`, then run:
+
+```powershell
+python -m phelmet.app --source data/sample/demo.mp4 --mock-imu --mock-gps --headless --save-video demo_trained.mp4
+```
+
+The conversion script samples frames 12 and 36 from every supplied clip, keeps its original train/validation split, resizes to 320 pixels, and turns each white mask component into a pothole box.

@@ -8,6 +8,7 @@ data/sample/*.csv
 data/*.db
 data/potholes/images/
 data/potholes/labels/
+data/pothole_video/
 runs/
 models/*.onnx
 demo_out.mp4
