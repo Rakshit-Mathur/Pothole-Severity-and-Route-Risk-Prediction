@@ -13,7 +13,7 @@ class Decision:
             print(f"state {self.state} -> {name}")
             self.state = name
 
-    def choose(self, tracks, speed_mps: float, pose_good: bool, now: float, t_ns: int):
+    def choose(self, tracks, speed_mps: float, pose_good: bool, now: float, t_ns: int, wall_ts: str = ""):
         if not pose_good:
             self.set_state("ROAD_NOT_VISIBLE")
             return None
@@ -26,15 +26,19 @@ class Decision:
             dist = get_distance(y+h, cam["height"] / 2, cam["focal_px"], cam["height_m"], cam["pitch_deg"])
             if dist is not None:
                 items.append((dist, trk, get_tti(dist, speed_mps)))
-        for dist, trk, tti in sorted(items):
+        for dist, trk, tti in sorted(items, key=lambda item: item[0]):
+            if trk.alerted:
+                continue
             if tti and dc["tti_min_s"] * scale <= tti <= dc["tti_max_s"] * scale:
                 trk.last_alert = now
+                trk.alerted = True
+                trk.alert_ts = wall_ts
                 width = get_width_cm(trk.det.box[2], dist, cam["focal_px"])
                 severity = self.severity(width, trk.det.conf, trk.det.dark)
                 if now - self.last_burst < dc["rough_patch_s"]:
                     severity = "ROUGH_PATCH"
                 self.last_burst = now
-                return Alert(t_ns, dist, tti, severity, trk.id)
+                return Alert(t_ns, dist, tti, severity, trk.id, trk.max_conf, wall_ts)
         return None
 
     def severity(self, width: float, conf: float, dark: float) -> str:

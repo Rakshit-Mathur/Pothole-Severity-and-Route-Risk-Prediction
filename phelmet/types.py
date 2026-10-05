@@ -32,3 +32,5 @@ class Alert:
     tti_s: float
     severity: str
     track_id: int
+    max_conf: float = 0.0
+    alert_ts: str = ""

@@ -1,4 +1,5 @@
 import time
+from datetime import datetime
 
 from .capture import Capture
 from .decision import Decision
@@ -9,6 +10,7 @@ from .roi import check_blur, check_road, get_horizon, get_roi, pose_ok
 from .scheduler import Scheduler
 from .timing import Rolling, Timer, now_ns
 from .tracker import Tracker
+from .storage import EventLog
 
 
 def make_detector(cfg: dict):
@@ -31,10 +33,14 @@ def view_info(frame, tracks, cfg, decide, speed, pose, latency, alert, fps):
             sev = alert.severity
         items.append({"box": trk.det.box, "id": trk.id, "conf": trk.det.conf, "confirmed": sum(trk.seen) >= cfg["tracker"]["confirm_n"], "dist": dist or 0, "tti": tti or 0, "severity": sev})
     h, w = frame.img.shape[:2]
-    return {"tracks": items, "roi": [(0, top), (w-1, top), (w-1, h-1), (0, h-1)], "horizon": top, "state": decide.state, "speed": speed * 3.6, "pitch": pose.pitch_deg, "fps": fps, "latency": latency, "alert": bool(alert), "num": frame.num}
+    return {"tracks": items, "roi": [(0, top), (w-1, top), (w-1, h-1), (0, h-1)], "horizon": top, "state": decide.state, "speed": speed * 3.6, "pitch": pose.pitch_deg, "fps": fps, "latency": latency, "alert": bool(alert), "num": frame.num, "flash_secs": cfg.get("event_log", {}).get("flash_secs", .5)}
 
 
-def run_loop(source, imu_loop, actuator, cfg: dict, gps=None, limit: int = 0, viewer=None) -> dict:
+def stamp() -> str:
+    return datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]
+
+
+def run_loop(source, imu_loop, actuator, cfg: dict, gps=None, limit: int = 0, viewer=None, log_file=None) -> dict:
     gps = gps or MockGps(cfg["gps"]["fallback_kmh"])
     cap, det, trk = Capture(source), make_detector(cfg), Tracker(cfg["tracker"])
     decide = Decision(cfg)
@@ -43,6 +49,8 @@ def run_loop(source, imu_loop, actuator, cfg: dict, gps=None, limit: int = 0, vi
     from .warning import Warning
     warn = Warning(actuator, lambda a, t: fired.append((a, (t-a.t_ns)/1e6)))
     sch = Scheduler(cfg["decision"]["latency_p95_ms"])
+    log = EventLog(log_file or cfg.get("event_log", {}).get("log_path", "logs/potholes.csv"))
+    log.start()
     cap.start(); imu_loop.start(); warn.start()
     count = 0
     try:
@@ -68,10 +76,16 @@ def run_loop(source, imu_loop, actuator, cfg: dict, gps=None, limit: int = 0, vi
                     for d in dets:
                         x, y, w, h = d.box
                         d.box = (x, y + top, w, h)
-                    tracks = trk.update(dets, time.monotonic())
+                    wall_ts = stamp()
+                    tracks = trk.update(dets, time.monotonic(), wall_ts)
+                    for old in trk.closed:
+                        log.done(old)
                     speed = gps.read().get("speed_kmh", cfg["gps"]["fallback_kmh"]) / 3.6
-                    alert = decide.choose(tracks, speed, pose_ok(pose, cfg), time.monotonic(), frame.t_capture_ns)
+                    alert = decide.choose(tracks, speed, pose_ok(pose, cfg), time.monotonic(), frame.t_capture_ns, wall_ts)
                     if alert:
+                        found = next(t for t in tracks if t.id == alert.track_id)
+                        print(f"[{alert.alert_ts}] WARNING: POTHOLE detected (id {alert.track_id}, conf {alert.max_conf:.2f})")
+                        log.log_event((found.first_ts, alert.alert_ts, alert.track_id, alert.max_conf, alert.severity, alert.distance_m))
                         warn.send(alert)
             latency = (now_ns() - frame.t_capture_ns) / 1e6
             lat.add(latency)
@@ -82,6 +96,7 @@ def run_loop(source, imu_loop, actuator, cfg: dict, gps=None, limit: int = 0, vi
                 break
     finally:
         cap.close(); imu_loop.close(); warn.close()
+        log.flush_open(trk.tracks)
         if viewer:
             viewer.close()
     return {"frames": count, "drops": cap.drops, "p50_ms": lat.p50(), "p95_ms": lat.p95(), "infer_p95_ms": infer.p95(), "alerts": fired}

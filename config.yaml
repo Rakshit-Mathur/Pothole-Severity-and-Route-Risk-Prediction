@@ -32,6 +32,10 @@ tracker:
   confirm_n: 2
   confirm_m: 3
   cooldown_s: 3.0
+  lost_frames: 3
+event_log:
+  log_path: logs/potholes.csv
+  flash_secs: 0.5
 decision:
   tti_min_s: 0.8
   tti_max_s: 2.5

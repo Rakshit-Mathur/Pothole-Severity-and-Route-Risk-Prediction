@@ -69,7 +69,7 @@ class MockGps:
 
 class ConsoleActuator:
     def beep(self, severity: str) -> None:
-        print(f"WARNING {severity}")
+        pass
 
     def close(self) -> None:
         pass

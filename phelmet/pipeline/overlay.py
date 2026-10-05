@@ -44,5 +44,5 @@ def draw(img: np.ndarray, info: dict) -> np.ndarray:
     put_text(out, f"fps {info['fps']:.1f}  e2e {info['latency']:.1f} ms", (8, 37))
     if info.get("alert"):
         cv2.rectangle(out, (1, 1), (out.shape[1]-2, out.shape[0]-2), (0, 0, 255), 5)
-        put_text(out, "WARNING", (out.shape[1] // 2-48, 30), (0, 0, 255), .7)
+        put_text(out, "POTHOLE DETECTED", (out.shape[1] // 2-78, 30), (0, 0, 255), .7)
     return out

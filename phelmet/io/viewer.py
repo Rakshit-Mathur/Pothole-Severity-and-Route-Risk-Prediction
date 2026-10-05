@@ -56,7 +56,7 @@ class Viewer:
             except queue.Empty:
                 continue
             if info["alert"]:
-                self.alert_until = info["num"] + int(self.fps * .5)
+                self.alert_until = max(self.alert_until, info["num"] + int(self.fps * info.get("flash_secs", .5)))
             info = info.copy()
             info["alert"] = info["num"] <= self.alert_until
             img = draw(frame, info)

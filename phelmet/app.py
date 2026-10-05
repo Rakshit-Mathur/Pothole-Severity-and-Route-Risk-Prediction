@@ -19,6 +19,7 @@ def main() -> None:
     ap.add_argument("--headless", action="store_true")
     ap.add_argument("--debug-view", action="store_true")
     ap.add_argument("--save-video")
+    ap.add_argument("--log-file")
     args = ap.parse_args()
     cfg = load_cfg(args.config)
     logging.basicConfig(level=logging.INFO)
@@ -33,7 +34,7 @@ def main() -> None:
     if viewer:
         viewer.start()
     try:
-        result = run_loop(source, imu, ConsoleActuator(), cfg, gps, viewer=viewer)
+        result = run_loop(source, imu, ConsoleActuator(), cfg, gps, viewer=viewer, log_file=args.log_file)
     except KeyboardInterrupt:
         print("stopping")
         result = {"frames": 0, "p50_ms": 0, "p95_ms": 0, "alerts": []}

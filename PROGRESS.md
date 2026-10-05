@@ -9,9 +9,10 @@
 - [x] M7 CLI and end-to-end test bc68bf3
 - [x] M9 benchmark and helper scripts 53aee62
 - [x] M7b detection overlay and demo video
+- [x] M7c once-per-pothole warning and event log
 
 ## Current
-- M9b: CUDA PyTorch install required before GPU training can resume.
+- Complete: replay pipeline, overlay, and event logging validated.
 
 ## Blocked / skipped
 - M10-M12: secondary storage, dashboard and routing cut to keep the core project small.
@@ -28,6 +29,7 @@
 - [x] M6 decision, warning, runner and scheduler
 - [x] M7 CLI and end-to-end test
 - [x] M7b detection overlay and demo video
+- [x] M7c once-per-pothole warning and event log
 - [ ] M8 real hardware classes (removed)
 - [x] M9 benchmark, train/export and calibration scripts
 - [ ] M9b train on pothole_video dataset
