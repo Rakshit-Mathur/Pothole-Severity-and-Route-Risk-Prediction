@@ -15,7 +15,9 @@ def iou(a, b) -> float:
 def near(a, b) -> bool:
     ax, ay, aw, ah = a
     bx, by, bw, bh = b
-    return ((ax+aw/2-bx-bw/2) ** 2 + (ay+ah/2-by-bh/2) ** 2) ** .5 < 35
+    gap = ((ax+aw/2-bx-bw/2) ** 2 + (ay+ah/2-by-bh/2) ** 2) ** .5
+    limit = max(12, min(35, .35 * max(aw, ah, bw, bh)))
+    return gap < limit
 
 
 @dataclass
