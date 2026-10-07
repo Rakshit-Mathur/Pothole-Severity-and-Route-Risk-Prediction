@@ -10,6 +10,7 @@ dependencies = ["numpy>=1.24", "opencv-python>=4.8", "PyYAML>=6.0"]
 
 [project.optional-dependencies]
 onnx = ["onnxruntime>=1.16"]
+map = ["Flask>=3.0"]
 test = ["pytest>=7.4"]
 
 [project.scripts]

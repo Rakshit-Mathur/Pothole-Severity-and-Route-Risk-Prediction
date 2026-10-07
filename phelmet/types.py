@@ -23,14 +23,3 @@ class Detection:
     box: tuple[float, float, float, float]
     conf: float
     dark: float = 0.0
-
-
-@dataclass
-class Alert:
-    t_ns: int
-    distance_m: float
-    tti_s: float
-    severity: str
-    track_id: int
-    max_conf: float = 0.0
-    alert_ts: str = ""

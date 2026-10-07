@@ -15,16 +15,23 @@ class Viewer:
         self.writer = None
         self.last = None
         self.last_num = 0
-        self.alert_until = 0
         self.thread = threading.Thread(target=self._run, daemon=True)
 
     def start(self) -> None:
         self.thread.start()
 
     def put(self, frame, info: dict) -> None:
-        if self.q.full():
-            self.q.get_nowait()
-        self.q.put_nowait((frame, info))
+        try:
+            self.q.put_nowait((frame, info))
+        except queue.Full:
+            try:
+                self.q.get_nowait()
+            except queue.Empty:
+                pass
+            try:
+                self.q.put_nowait((frame, info))
+            except queue.Full:
+                pass
 
     def _open(self, img) -> None:
         if self.path:
@@ -55,10 +62,6 @@ class Viewer:
                 frame, info = self.q.get(timeout=.1)
             except queue.Empty:
                 continue
-            if info["alert"]:
-                self.alert_until = max(self.alert_until, info["num"] + int(self.fps * info.get("flash_secs", .5)))
-            info = info.copy()
-            info["alert"] = info["num"] <= self.alert_until
             img = draw(frame, info)
             if self.writer is None:
                 self._open(img)

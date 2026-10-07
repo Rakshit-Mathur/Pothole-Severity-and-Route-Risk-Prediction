@@ -25,7 +25,7 @@ def draw_track(img, track: dict):
     if track["severity"] == "ROUGH_PATCH":
         put_text(img, "rough patch", (int(x), int(y+h+16)), color)
     else:
-        put_text(img, f"{track['dist']:.1f}m  tti {track['tti']:.1f}s  {track['severity'][:3]}", (int(x), int(y+h+16)), color)
+        put_text(img, f"{track['dist']:.1f}m  {track['severity'][:3]}", (int(x), int(y+h+16)), color)
 
 
 def draw(img: np.ndarray, info: dict) -> np.ndarray:
@@ -42,7 +42,4 @@ def draw(img: np.ndarray, info: dict) -> np.ndarray:
             draw_track(out, track)
     put_text(out, f"{state}  {info['speed']:.1f} km/h  pitch {info['pitch']:.1f}", (8, 18))
     put_text(out, f"fps {info['fps']:.1f}  e2e {info['latency']:.1f} ms", (8, 37))
-    if info.get("alert"):
-        cv2.rectangle(out, (1, 1), (out.shape[1]-2, out.shape[0]-2), (0, 0, 255), 5)
-        put_text(out, "POTHOLE DETECTED", (out.shape[1] // 2-78, 30), (0, 0, 255), .7)
     return out

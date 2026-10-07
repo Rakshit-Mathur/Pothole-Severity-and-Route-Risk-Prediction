@@ -10,12 +10,13 @@
 - [x] M9 benchmark and helper scripts 53aee62
 - [x] M7b detection overlay and demo video
 - [x] M7c once-per-pothole warning and event log
+- [x] M10 geotagged road log, path and map API
 
 ## Current
-- Complete: replay pipeline, overlay, and event logging validated.
+- M10: replace warnings with GPS road logging and route-risk data.
 
 ## Blocked / skipped
-- M10-M12: secondary storage, dashboard and routing cut to keep the core project small.
+- M11: full production map-provider authentication is not included.
 - M8: removed; this is software demonstration scope only.
 - M9b: CUDA wheel installer stalled; GPU and prepared data are ready.
 
@@ -30,9 +31,10 @@
 - [x] M7 CLI and end-to-end test
 - [x] M7b detection overlay and demo video
 - [x] M7c once-per-pothole warning and event log
+- [x] M10 storage, path and map-ready route risk
 - [ ] M8 real hardware classes (removed)
 - [x] M9 benchmark, train/export and calibration scripts
 - [ ] M9b train on pothole_video dataset
-- [ ] M10 storage (skipped)
+- [x] M10 storage
 - [ ] M11 dashboard (skipped)
 - [ ] M12 safest routing (skipped)

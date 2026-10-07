@@ -25,11 +25,9 @@ class Track:
     id: int
     det: Detection
     seen: list[bool] = field(default_factory=list)
-    last_alert: float = -999.0
     max_conf: float = 0.0
     first_ts: str = ""
-    alert_ts: str = ""
-    alerted: bool = False
+    logged: bool = False
     missed: int = 0
 
 
@@ -66,4 +64,4 @@ class Tracker:
             else:
                 keep.append(trk)
         self.tracks = keep
-        return [t for t in self.tracks if sum(t.seen) >= self.cfg["confirm_n"] and now - t.last_alert >= self.cfg["cooldown_s"]]
+        return [t for t in self.tracks if sum(t.seen) >= self.cfg["confirm_n"]]

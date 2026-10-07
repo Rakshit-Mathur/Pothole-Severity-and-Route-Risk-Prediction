@@ -60,16 +60,12 @@ class CsvGps:
 
 
 class MockGps:
-    def __init__(self, speed_kmh: float = 40.0) -> None:
-        self.speed_kmh = speed_kmh
+    def __init__(self, speed_kmh: float = 40.0, lat: float = 12.9716, lon: float = 77.5946, hz: float = 20.0) -> None:
+        self.speed_kmh, self.lat, self.lon = speed_kmh, lat, lon
+        self.step = speed_kmh / 3.6 / hz / 111111
 
     def read(self) -> dict:
-        return {"speed_kmh": self.speed_kmh, "lat": 0.0, "lon": 0.0}
-
-
-class ConsoleActuator:
-    def beep(self, severity: str) -> None:
-        pass
-
-    def close(self) -> None:
-        pass
+        row = {"speed_kmh": self.speed_kmh, "lat": self.lat, "lon": self.lon}
+        self.lat += self.step
+        self.lon += self.step * .25
+        return row

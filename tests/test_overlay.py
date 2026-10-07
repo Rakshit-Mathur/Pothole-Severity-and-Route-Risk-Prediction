@@ -4,7 +4,7 @@ from phelmet.pipeline.overlay import draw, to_full
 
 
 def info(state="NORMAL"):
-    return {"tracks": [{"box": (20, 80, 40, 16), "id": 3, "conf": .82, "confirmed": True, "dist": 7.4, "tti": .7, "severity": "MEDIUM"}], "roi": [(0, 60), (159, 60), (159, 119), (0, 119)], "horizon": 60, "state": state, "speed": 40, "pitch": 8, "fps": 20, "latency": 8, "alert": False, "num": 1}
+    return {"tracks": [{"box": (20, 80, 40, 16), "id": 3, "conf": .82, "confirmed": True, "dist": 7.4, "severity": "MEDIUM"}], "roi": [(0, 60), (159, 60), (159, 119), (0, 119)], "horizon": 60, "state": state, "speed": 40, "pitch": 8, "fps": 20, "latency": 8, "num": 1}
 
 
 def test_draw_copy_and_box():

@@ -1,1 +1,1 @@
-"""Pothole warning package."""
+"""Pothole road-risk logging package."""

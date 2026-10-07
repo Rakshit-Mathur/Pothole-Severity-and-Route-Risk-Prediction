@@ -1,0 +1,9 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Road risk map</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"><style>#map{height:92vh}body{margin:0;font:14px Arial}#stats{padding:10px}</style></head>
+<body><div id="stats">Loading road quality…</div><div id="map"></div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script><script>
+const map=L.map('map').setView([12.9716,77.5946],15);L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap'}).addTo(map);
+fetch('/api/road.geojson').then(r=>r.json()).then(data=>{const layer=L.geoJSON(data,{style:{color:'#1575c5',weight:4},pointToLayer:(f,ll)=>L.circleMarker(ll,{radius:7,color:f.properties.severity==='HIGH'?'#d22':'#e90',fillOpacity:.8}).bindPopup(`Pothole ${f.properties.severity}<br>confidence ${f.properties.confidence.toFixed(2)}`)}).addTo(map);if(layer.getBounds().isValid())map.fitBounds(layer.getBounds())});
+fetch('/api/stats').then(r=>r.json()).then(x=>document.querySelector('#stats').textContent=`Road quality score: ${x.road_score}/100 | ${x.potholes} potholes | ${x.distance_m} m mapped`);
+</script></body></html>
