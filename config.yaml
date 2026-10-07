@@ -42,6 +42,7 @@ decision:
 storage:
   db_path: data/road_log.db
   dedup_radius_m: 8.0
+  score_penalty_per_risk_km: 4.0
 maps:
   provider: geojson
   route_source: openstreetmap_or_google

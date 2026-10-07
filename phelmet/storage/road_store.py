@@ -94,15 +94,16 @@ def pothole_rows(path: str) -> list:
     return [{"lat": x[0], "lon": x[1], "severity": x[2]} for x in rows]
 
 
-def stats(path: str) -> dict:
+def stats(path: str, penalty: float = 4.0) -> dict:
     db = sqlite3.connect(path)
     points = db.execute("select lat,lon from path_points order by rowid").fetchall()
-    holes = db.execute("select severity from potholes").fetchall()
+    holes = db.execute("select severity,max_conf from potholes").fetchall()
     db.close()
     distance = sum(metres(a[0], a[1], b[0], b[1]) for a, b in zip(points, points[1:]))
-    risk = sum({"LOW": 1, "MEDIUM": 3, "HIGH": 6}.get(x[0], 3) for x in holes)
-    score = max(0, round(100 - 100 * risk / max(distance, 50), 1))
-    return {"potholes": len(holes), "distance_m": round(distance, 1), "road_score": score}
+    risk = sum({"LOW": 1, "MEDIUM": 3, "HIGH": 6}.get(x[0], 3) * x[1] for x in holes)
+    risk_km = risk / max(distance / 1000, .05)
+    score = max(0, round(100 - penalty * risk_km, 1))
+    return {"potholes": len(holes), "distance_m": round(distance, 1), "risk_per_km": round(risk_km, 2), "road_score": score}
 
 
 def export_geojson(db_path: str, out: str) -> None:

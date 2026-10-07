@@ -1,7 +1,7 @@
 import time
 
 from phelmet.routing import safest
-from phelmet.storage.road_store import RoadStore, geojson
+from phelmet.storage.road_store import RoadStore, geojson, stats
 
 
 def test_dedup_path_and_route(tmp_path):
@@ -17,5 +17,7 @@ def test_dedup_path_and_route(tmp_path):
     data = geojson(path)
     holes = [x for x in data["features"] if x["properties"]["kind"] == "pothole"]
     assert len(holes) == 1 and holes[0]["properties"]["confidence"] == .9
+    report = stats(path)
+    assert report["risk_per_km"] > 10 and report["road_score"] < 50
     out = safest([{"id": "bad", "coords": [[12, 77]]}, {"id": "good", "coords": [[13, 78]]}], [{"lat": 12, "lon": 77, "severity": "HIGH"}])
     assert out["id"] == "good"

@@ -2,7 +2,7 @@ from .routing import safest
 from .storage.road_store import geojson, pothole_rows, stats
 
 
-def create_app(db_path: str):
+def create_app(db_path: str, penalty: float = 4.0):
     try:
         from flask import Flask, jsonify
     except ImportError as e:
@@ -19,7 +19,7 @@ def create_app(db_path: str):
 
     @app.get("/api/stats")
     def road_stats():
-        return jsonify(stats(db_path))
+        return jsonify(stats(db_path, penalty))
 
     @app.post("/api/safest-route")
     def safe_route():
