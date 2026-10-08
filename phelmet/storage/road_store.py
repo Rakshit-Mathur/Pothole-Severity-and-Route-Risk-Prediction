@@ -23,7 +23,8 @@ class RoadStore:
         self.thread.start()
 
     def point(self, row: dict, ts: str) -> None:
-        self._put(("point", (ts, row["lat"], row["lon"], row["speed_kmh"])))
+        if row.get("fix_ok") and row.get("hdop", 99) <= 4:
+            self._put(("point", (ts, row["lat"], row["lon"], row["speed_kmh"], row.get("source", "unknown"), row.get("hdop"), row.get("sats"))))
 
     def pothole(self, row: tuple) -> None:
         self._put(("pothole", row))
@@ -48,7 +49,11 @@ class RoadStore:
         self.path.parent.mkdir(parents=True, exist_ok=True)
         db = sqlite3.connect(self.path)
         db.execute("pragma journal_mode=WAL")
-        db.execute("create table if not exists path_points (ts text, lat real, lon real, speed_kmh real)")
+        db.execute("create table if not exists path_points (ts text, lat real, lon real, speed_kmh real, source text, hdop real, sats integer)")
+        cols = {x[1] for x in db.execute("pragma table_info(path_points)")}
+        for name, kind in (("source", "text"), ("hdop", "real"), ("sats", "integer")):
+            if name not in cols:
+                db.execute(f"alter table path_points add column {name} {kind}")
         db.execute("create table if not exists potholes (id integer primary key, ts text, lat real, lon real, max_conf real, severity text, dist_m real, seen integer default 1)")
         return db
 
@@ -69,7 +74,7 @@ class RoadStore:
             except queue.Empty:
                 continue
             if kind == "point":
-                db.execute("insert into path_points values (?,?,?,?)", row)
+                db.execute("insert into path_points (ts,lat,lon,speed_kmh,source,hdop,sats) values (?,?,?,?,?,?,?)", row)
             else:
                 self._pothole(db, row)
             db.commit()
@@ -78,10 +83,10 @@ class RoadStore:
 
 def geojson(path: str) -> dict:
     db = sqlite3.connect(path)
-    points = db.execute("select lat,lon,speed_kmh from path_points order by rowid").fetchall()
+    points = db.execute("select lat,lon,speed_kmh,source,hdop,sats from path_points order by rowid").fetchall()
     holes = db.execute("select id,ts,lat,lon,max_conf,severity,dist_m,seen from potholes").fetchall()
     db.close()
-    features = [{"type": "Feature", "properties": {"kind": "path"}, "geometry": {"type": "LineString", "coordinates": [[x[1], x[0]] for x in points]}}]
+    features = [{"type": "Feature", "properties": {"kind": "path", "source": points[0][3] if points else "none"}, "geometry": {"type": "LineString", "coordinates": [[x[1], x[0]] for x in points]}}]
     for x in holes:
         features.append({"type": "Feature", "properties": {"kind": "pothole", "id": x[0], "time": x[1], "confidence": x[4], "severity": x[5], "distance_m": x[6], "seen": x[7]}, "geometry": {"type": "Point", "coordinates": [x[3], x[2]]}})
     return {"type": "FeatureCollection", "features": features}

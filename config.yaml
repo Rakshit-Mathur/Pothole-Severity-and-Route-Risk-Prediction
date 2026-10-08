@@ -15,6 +15,9 @@ imu:
   max_rate_dps: 55.0
 gps:
   source: mock
+  port: COM3
+  baud: 9600
+  max_hdop: 4.0
   fallback_kmh: 40.0
   mock_lat: 12.9716
   mock_lon: 77.5946

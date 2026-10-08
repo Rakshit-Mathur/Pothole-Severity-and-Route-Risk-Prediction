@@ -75,6 +75,8 @@ def run_loop(source, imu_loop, cfg: dict, gps=None, limit: int = 0, viewer=None,
                     wall_ts = stamp()
                     tracks = trk.update(dets, time.monotonic(), wall_ts)
                     for found, dist, severity in decide.assess(tracks, pose_ok(pose, cfg)):
+                        if not gps_row.get("fix_ok") or gps_row.get("hdop", 99) > cfg["gps"].get("max_hdop", 4.0):
+                            continue
                         store.pothole((wall_ts, gps_row["lat"], gps_row["lon"], found.max_conf, severity, dist))
                         print(f"[{wall_ts}] logged pothole id {found.id}, conf {found.max_conf:.2f}, {severity}")
             latency = (now_ns() - frame.t_capture_ns) / 1e6

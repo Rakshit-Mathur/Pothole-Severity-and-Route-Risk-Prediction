@@ -4,6 +4,8 @@ from pathlib import Path
 
 import cv2
 
+from .gps import NmeaGps
+
 
 class VideoSource:
     def __init__(self, path: str, pace: bool = True) -> None:
@@ -56,7 +58,9 @@ class CsvGps:
     def read(self) -> dict:
         row = self.rows[min(self.i, len(self.rows) - 1)]
         self.i += 1
-        return {k: float(v) for k, v in row.items()}
+        out = {k: float(v) for k, v in row.items()}
+        out.update({"fix_ok": True, "source": "csv", "hdop": 1.0, "sats": 10})
+        return out
 
 
 class MockGps:
@@ -65,7 +69,7 @@ class MockGps:
         self.step = speed_kmh / 3.6 / hz / 111111
 
     def read(self) -> dict:
-        row = {"speed_kmh": self.speed_kmh, "lat": self.lat, "lon": self.lon}
+        row = {"speed_kmh": self.speed_kmh, "lat": self.lat, "lon": self.lon, "fix_ok": True, "source": "mock", "hdop": 1.0, "sats": 12}
         self.lat += self.step
         self.lon += self.step * .25
         return row

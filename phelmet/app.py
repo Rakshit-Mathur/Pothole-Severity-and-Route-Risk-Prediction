@@ -3,7 +3,7 @@ import logging
 import time
 
 from .config import load_cfg
-from .io import CsvGps, MockGps, MockImu, VideoSource
+from .io import CsvGps, MockGps, MockImu, NmeaGps, VideoSource
 from .io.viewer import Viewer
 from .pose import PoseLoop
 from .runner import run_loop
@@ -16,6 +16,9 @@ def main() -> None:
     ap.add_argument("--source")
     ap.add_argument("--mock-imu", action="store_true")
     ap.add_argument("--mock-gps", action="store_true")
+    ap.add_argument("--gps-source", choices=["mock", "csv", "nmea"])
+    ap.add_argument("--gps-port")
+    ap.add_argument("--gps-file", default="data/sample/gps.csv")
     ap.add_argument("--no-dashboard", action="store_true")
     ap.add_argument("--headless", action="store_true")
     ap.add_argument("--debug-view", action="store_true")
@@ -26,11 +29,17 @@ def main() -> None:
     cfg = load_cfg(args.config)
     logging.basicConfig(level=logging.INFO)
     path = args.source or cfg["camera"]["source"]
-    if path in ("0", "picam"):
-        raise ValueError("this software demonstration accepts a video file")
-    source = VideoSource(path)
+    source = VideoSource(int(path) if path == "0" else path, pace=path != "0")
+    if path == "0" and source.delay == 1:
+        source.delay = 1 / cfg["camera"]["fps"]
     imu = PoseLoop(MockImu(), cfg["imu"]["rate_hz"])
-    gps = MockGps(cfg["gps"]["fallback_kmh"], cfg["gps"]["mock_lat"], cfg["gps"]["mock_lon"], 1 / source.delay) if args.mock_gps else CsvGps("data/sample/gps.csv")
+    gps_kind = "mock" if args.mock_gps else args.gps_source or cfg["gps"]["source"]
+    if gps_kind == "nmea":
+        gps = NmeaGps(args.gps_port or cfg["gps"]["port"], cfg["gps"]["baud"])
+    elif gps_kind == "csv":
+        gps = CsvGps(args.gps_file)
+    else:
+        gps = MockGps(cfg["gps"]["fallback_kmh"], cfg["gps"]["mock_lat"], cfg["gps"]["mock_lon"], 1 / source.delay)
     started = time.monotonic()
     viewer = Viewer(1 / source.delay, args.debug_view, args.save_video) if args.debug_view or args.save_video else None
     if viewer:
@@ -44,6 +53,8 @@ def main() -> None:
         print("stopping")
         result = {"frames": 0, "p50_ms": 0, "p95_ms": 0}
     elapsed = time.monotonic() - started
+    if hasattr(gps, "close"):
+        gps.close()
     print(f"summary {elapsed:.1f}s frames={result['frames']} p50={result['p50_ms']:.1f}ms p95={result['p95_ms']:.1f}ms")
 
 

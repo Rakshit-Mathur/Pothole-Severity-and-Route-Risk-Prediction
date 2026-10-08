@@ -15,3 +15,8 @@ models/*.onnx
 yolov8*.pt
 demo_out.mp4
 logs/
+*.md
+docs/
+outputs/
+tests/
+data/
